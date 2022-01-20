@@ -23,12 +23,17 @@ export const PriceCalculator: React.FC = () => {
     setShoppingList(shoppingList.filter((item) => item.id !== id));
   };
 
+  const handleCalculateTotal = () => {};
+
   console.log("SHOPPING LIST", shoppingList);
 
   return (
     <>
       <List
         bordered
+        locale={{
+          emptyText: "Add groceries to your list from the choices below",
+        }}
         style={{ width: "50%", height: 600, overflow: "scroll" }}
         dataSource={shoppingList}
         size="small"
