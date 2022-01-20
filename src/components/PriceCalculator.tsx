@@ -10,7 +10,7 @@ export const PriceCalculator: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalSavings, setTotalSavings] = useState(0);
   const [shoppingList, setShoppingList] = useState<ShoppingListType[]>([]);
-  const [countByItem, setCountByItem] = useState<CountByItemType>({
+  const [countByType, setCountByType] = useState<CountByItemType>({
     bread: 0,
     milk: 0,
     banana: 0,
@@ -38,12 +38,12 @@ export const PriceCalculator: React.FC = () => {
 
   const handleClickItem = (item: GroceriesType) => {
     setShoppingList(shoppingList.concat({ groceryType: item, id: uniqid() }));
-    setCountByItem({ ...countByItem, [item]: countByItem[item] + 1 });
+    setCountByType({ ...countByType, [item]: countByType[item] + 1 });
   };
 
   const handleRemoveItem = (id: string, item: GroceriesType) => {
     setShoppingList(shoppingList.filter((item) => item.id !== id));
-    setCountByItem({ ...countByItem, [item]: countByItem[item] - 1 });
+    setCountByType({ ...countByType, [item]: countByType[item] - 1 });
   };
 
   const calculateItemDiscounts = (
@@ -72,14 +72,13 @@ export const PriceCalculator: React.FC = () => {
       milk: milkCount,
       banana: bananaCount,
       apple: appleCount,
-    } = countByItem;
+    } = countByType;
     const breadTotalPriceAfterDiscounts = calculateItemDiscounts(
       breadCount,
       breadUnitPrice,
       breadSalePrice,
       breadSaleQuantity
     );
-    console.log("bread PRICE AFTER DISCOUNTs", breadTotalPriceAfterDiscounts);
     const milkTotalPriceAfterDiscounts = calculateItemDiscounts(
       milkCount,
       milkUnitPrice,
@@ -109,15 +108,13 @@ export const PriceCalculator: React.FC = () => {
     setShoppingList([]);
     setTotalPrice(0);
     setTotalSavings(0);
-    setCountByItem({
+    setCountByType({
       bread: 0,
       milk: 0,
       banana: 0,
       apple: 0,
     });
   };
-
-  console.log("SHOPPING LIST", shoppingList);
 
   return (
     <>
