@@ -5,6 +5,10 @@ import uniqid from "uniqid";
 
 import { PRICES } from "../constants/PRICES";
 import { GroceriesType, ShoppingListType, CountByItemType } from "../tsTypes";
+import {
+  calculateItemSavings,
+  calculateItemDiscounts,
+} from "../utilities/priceCalculation";
 
 export const PriceCalculator: React.FC = () => {
   const [totalPrice, setTotalPrice] = useState(0);
@@ -46,25 +50,25 @@ export const PriceCalculator: React.FC = () => {
     setCountByType({ ...countByType, [item]: countByType[item] - 1 });
   };
 
-  const calculateItemDiscounts = (
-    totalItems: number,
-    unitPrice: number,
-    salePrice: number,
-    saleQuantity: number
-  ) => {
-    if (totalItems < saleQuantity) return unitPrice * totalItems;
-    else {
-      const totalUnitPricedItems = totalItems % saleQuantity;
-      const totalSalePricedItems = totalItems - totalUnitPricedItems;
-      const unitPricedItemCost = totalUnitPricedItems * unitPrice;
-      const salePricedItemsCost =
-        totalSalePricedItems * (salePrice / saleQuantity);
-      return unitPricedItemCost + salePricedItemsCost;
-    }
-  };
+  // const calculateItemDiscounts = (
+  //   totalItems: number,
+  //   unitPrice: number,
+  //   salePrice: number,
+  //   saleQuantity: number
+  // ) => {
+  //   if (totalItems < saleQuantity) return unitPrice * totalItems;
+  //   else {
+  //     const totalUnitPricedItems = totalItems % saleQuantity;
+  //     const totalSalePricedItems = totalItems - totalUnitPricedItems;
+  //     const unitPricedItemCost = totalUnitPricedItems * unitPrice;
+  //     const salePricedItemsCost =
+  //       totalSalePricedItems * (salePrice / saleQuantity);
+  //     return unitPricedItemCost + salePricedItemsCost;
+  //   }
+  // };
 
-  const calculateItemSavings = (cost: number, costAfterDiscounts: number) =>
-    cost - costAfterDiscounts;
+  // const calculateItemSavings = (cost: number, costAfterDiscounts: number) =>
+  //   cost - costAfterDiscounts;
 
   const calculateTotalBill = () => {
     const {
