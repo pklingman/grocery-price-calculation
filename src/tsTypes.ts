@@ -1,8 +1,8 @@
 export enum GroceriesEnum {
-  Bread = "Bread",
-  Milk = "Milk",
-  Banana = "Banana",
-  Apple = "Apple",
+  Bread = "bread",
+  Milk = "milk",
+  Banana = "banana",
+  Apple = "apple",
 }
 
 export interface ShoppingListType {
