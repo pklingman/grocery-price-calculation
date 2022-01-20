@@ -5,7 +5,7 @@ export interface ShoppingListType {
   id: string;
 }
 
-export interface CountByItemType {
+export interface ValueByItemType {
   bread: number;
   milk: number;
   banana: number;

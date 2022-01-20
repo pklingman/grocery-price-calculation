@@ -1,25 +1,35 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Space, Button, List, Typography } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import uniqid from "uniqid";
 
 import { PRICES } from "../constants/PRICES";
-import { GroceriesType, ShoppingListType, CountByItemType } from "../tsTypes";
+import { GroceriesType, ShoppingListType, ValueByItemType } from "../tsTypes";
 import {
   calculateItemSavings,
   calculateItemDiscounts,
 } from "../utilities/priceCalculation";
 
 export const PriceCalculator: React.FC = () => {
-  const [totalPrice, setTotalPrice] = useState(0);
+  const [totalCost, setTotalCost] = useState(0);
   const [totalSavings, setTotalSavings] = useState(0);
   const [shoppingList, setShoppingList] = useState<ShoppingListType[]>([]);
-  const [countByType, setCountByType] = useState<CountByItemType>({
+  const [countByType, setCountByType] = useState<ValueByItemType>({
     bread: 0,
     milk: 0,
     banana: 0,
     apple: 0,
   });
+  const [costByType, setCostByType] = useState<ValueByItemType>({
+    bread: 0,
+    milk: 0,
+    banana: 0,
+    apple: 0,
+  });
+
+  useEffect(() => {
+    calculateTotalBill();
+  }, [shoppingList]);
 
   const { Text } = Typography;
   const { Item } = List;
@@ -57,42 +67,54 @@ export const PriceCalculator: React.FC = () => {
       banana: bananaCount,
       apple: appleCount,
     } = countByType;
-    const breadTotalPriceAfterDiscounts = calculateItemDiscounts(
+    const breadTotalCostAfterDiscounts = calculateItemDiscounts(
       breadCount,
       breadUnitPrice,
       breadSalePrice,
       breadSaleQuantity
     );
-    const milkTotalPriceAfterDiscounts = calculateItemDiscounts(
+    const milkTotalCostAfterDiscounts = calculateItemDiscounts(
       milkCount,
       milkUnitPrice,
       milkSalePrice,
       milkSaleQuantity
     );
-    const bananaTotalPrices = bananaCount * bananaPricingInfo.unitPrice;
-    const appleTotalPrices = appleCount * applePricingInfo.unitPrice;
+    const bananaTotalCost = bananaCount * bananaPricingInfo.unitPrice;
+    const appleTotalCost = appleCount * applePricingInfo.unitPrice;
     const breadSavings = calculateItemSavings(
       breadCount * breadUnitPrice,
-      breadTotalPriceAfterDiscounts
+      breadTotalCostAfterDiscounts
     );
     const milkSavings = calculateItemSavings(
       milkCount * milkUnitPrice,
-      milkTotalPriceAfterDiscounts
+      milkTotalCostAfterDiscounts
     );
-    setTotalPrice(
-      breadTotalPriceAfterDiscounts +
-        milkTotalPriceAfterDiscounts +
-        bananaTotalPrices +
-        appleTotalPrices
+    setCostByType({
+      bread: breadTotalCostAfterDiscounts,
+      milk: milkTotalCostAfterDiscounts,
+      banana: bananaTotalCost,
+      apple: appleTotalCost,
+    });
+    setTotalCost(
+      breadTotalCostAfterDiscounts +
+        milkTotalCostAfterDiscounts +
+        bananaTotalCost +
+        appleTotalCost
     );
     setTotalSavings(breadSavings + milkSavings);
   };
 
   const resetBill = () => {
     setShoppingList([]);
-    setTotalPrice(0);
+    setTotalCost(0);
     setTotalSavings(0);
     setCountByType({
+      bread: 0,
+      milk: 0,
+      banana: 0,
+      apple: 0,
+    });
+    setCostByType({
       bread: 0,
       milk: 0,
       banana: 0,
@@ -141,8 +163,9 @@ export const PriceCalculator: React.FC = () => {
         Clear list
       </Button>
       <Text>
-        Total Price: {totalPrice.toFixed(2)}, Total Savings:{" "}
+        Total Price: {totalCost.toFixed(2)}, Total Savings:{" "}
         {totalSavings.toFixed(2)}
+        Apple: {costByType.apple}
       </Text>
     </>
   );
