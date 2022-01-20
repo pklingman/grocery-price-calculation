@@ -50,26 +50,6 @@ export const PriceCalculator: React.FC = () => {
     setCountByType({ ...countByType, [item]: countByType[item] - 1 });
   };
 
-  // const calculateItemDiscounts = (
-  //   totalItems: number,
-  //   unitPrice: number,
-  //   salePrice: number,
-  //   saleQuantity: number
-  // ) => {
-  //   if (totalItems < saleQuantity) return unitPrice * totalItems;
-  //   else {
-  //     const totalUnitPricedItems = totalItems % saleQuantity;
-  //     const totalSalePricedItems = totalItems - totalUnitPricedItems;
-  //     const unitPricedItemCost = totalUnitPricedItems * unitPrice;
-  //     const salePricedItemsCost =
-  //       totalSalePricedItems * (salePrice / saleQuantity);
-  //     return unitPricedItemCost + salePricedItemsCost;
-  //   }
-  // };
-
-  // const calculateItemSavings = (cost: number, costAfterDiscounts: number) =>
-  //   cost - costAfterDiscounts;
-
   const calculateTotalBill = () => {
     const {
       bread: breadCount,
@@ -161,7 +141,8 @@ export const PriceCalculator: React.FC = () => {
         Clear list
       </Button>
       <Text>
-        Total Price: {totalPrice}, Total Savings: {totalSavings}
+        Total Price: {totalPrice.toFixed(2)}, Total Savings:{" "}
+        {totalSavings.toFixed(2)}
       </Text>
     </>
   );
