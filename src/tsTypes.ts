@@ -1,11 +1,13 @@
-export enum GroceriesEnum {
-  Bread = "bread",
-  Milk = "milk",
-  Banana = "banana",
-  Apple = "apple",
-}
+export type GroceriesType = "bread" | "milk" | "banana" | "apple";
 
 export interface ShoppingListType {
-  groceryType: GroceriesEnum;
+  groceryType: GroceriesType;
   id: string;
+}
+
+export interface CountByItemType {
+  bread: number;
+  milk: number;
+  banana: number;
+  apple: number;
 }
