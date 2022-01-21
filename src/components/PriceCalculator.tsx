@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Space, Button, List, Typography } from "antd";
+import React, { useState, useEffect, useCallback } from "react";
+import { Space, Button, List, Typography, Layout } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import uniqid from "uniqid";
 
@@ -27,12 +27,10 @@ export const PriceCalculator: React.FC = () => {
     apple: 0,
   });
 
-  useEffect(() => {
-    calculateTotalBill();
-  }, [shoppingList]);
-
-  const { Text } = Typography;
+  const { Text, Title } = Typography;
   const { Item } = List;
+  const { Header, Footer, Sider, Content } = Layout;
+
   const {
     bread: breadPricingInfo,
     milk: milkPricingInfo,
@@ -50,17 +48,7 @@ export const PriceCalculator: React.FC = () => {
     saleQuantity: milkSaleQuantity,
   } = milkPricingInfo;
 
-  const handleClickItem = (item: GroceriesType) => {
-    setShoppingList(shoppingList.concat({ groceryType: item, id: uniqid() }));
-    setCountByType({ ...countByType, [item]: countByType[item] + 1 });
-  };
-
-  const handleRemoveItem = (id: string, item: GroceriesType) => {
-    setShoppingList(shoppingList.filter((item) => item.id !== id));
-    setCountByType({ ...countByType, [item]: countByType[item] - 1 });
-  };
-
-  const calculateTotalBill = () => {
+  const calculateTotalBill = useCallback(() => {
     const {
       bread: breadCount,
       milk: milkCount,
@@ -102,6 +90,30 @@ export const PriceCalculator: React.FC = () => {
         appleTotalCost
     );
     setTotalSavings(breadSavings + milkSavings);
+  }, [
+    applePricingInfo.unitPrice,
+    bananaPricingInfo.unitPrice,
+    breadSalePrice,
+    breadSaleQuantity,
+    breadUnitPrice,
+    countByType,
+    milkSalePrice,
+    milkSaleQuantity,
+    milkUnitPrice,
+  ]);
+
+  useEffect(() => {
+    calculateTotalBill();
+  }, [shoppingList, calculateTotalBill]);
+
+  const handleClickItem = (item: GroceriesType) => {
+    setShoppingList(shoppingList.concat({ groceryType: item, id: uniqid() }));
+    setCountByType({ ...countByType, [item]: countByType[item] + 1 });
+  };
+
+  const handleRemoveItem = (id: string, item: GroceriesType) => {
+    setShoppingList(shoppingList.filter((item) => item.id !== id));
+    setCountByType({ ...countByType, [item]: countByType[item] - 1 });
   };
 
   const resetBill = () => {
@@ -124,49 +136,82 @@ export const PriceCalculator: React.FC = () => {
 
   return (
     <>
-      <List
-        bordered
-        locale={{
-          emptyText: "Add groceries to your list from the choices below",
-        }}
-        style={{ width: "50%", height: 600, overflow: "scroll" }}
-        dataSource={shoppingList}
-        size="small"
-        renderItem={({ groceryType, id }) => (
-          <Item
-            key={`list-${id}`}
-            extra={
+      <Layout style={{ width: 1000 }}>
+        <Header style={{ background: "#189AA6" }}>
+          <Title style={{ color: "white", marginTop: 10 }} level={3}>
+            Calculate your grocery bill
+          </Title>
+        </Header>
+        <Layout>
+          <Content style={{ display: "flex", flexDirection: "column" }}>
+            <List
+              locale={{
+                emptyText: "Add groceries to your list from the choices below.",
+              }}
+              style={{ width: "40%", height: 600, overflow: "scroll" }}
+              dataSource={shoppingList}
+              size="small"
+              renderItem={({ groceryType, id }) => (
+                <Item
+                  key={`list-${id}`}
+                  extra={
+                    <Button
+                      type="ghost"
+                      icon={<CloseOutlined />}
+                      style={{ border: 0, color: "lightgray" }}
+                      onClick={() => {
+                        handleRemoveItem(id, groceryType);
+                      }}
+                    />
+                  }
+                >
+                  <Text>{`${groceryType[0].toUpperCase()}${groceryType.slice(
+                    1
+                  )}`}</Text>
+                </Item>
+              )}
+            />
+
+            <Space
+              style={{ display: "flex", flexDirection: "row", margin: 20 }}
+            >
               <Button
-                type="ghost"
-                icon={<CloseOutlined />}
-                style={{ border: 0, color: "lightgray" }}
-                onClick={() => {
-                  handleRemoveItem(id, groceryType);
-                }}
-              />
-            }
-          >
-            <Text>{groceryType}</Text>
-          </Item>
-        )}
-      />
-      <Space>
-        <Button onClick={() => handleClickItem("bread")}>bread</Button>
-        <Button onClick={() => handleClickItem("milk")}>milk</Button>
-        <Button onClick={() => handleClickItem("banana")}>banana</Button>
-        <Button onClick={() => handleClickItem("apple")}>apple</Button>
-      </Space>
-      <Button type="primary" onClick={calculateTotalBill}>
-        Calculate Total Price
-      </Button>
-      <Button danger onClick={resetBill}>
-        Clear list
-      </Button>
-      <Text>
-        Total Price: {totalCost.toFixed(2)}, Total Savings:{" "}
-        {totalSavings.toFixed(2)}
-        Apple: {costByType.apple}
-      </Text>
+                style={{ width: 100 }}
+                onClick={() => handleClickItem("bread")}
+              >
+                Bread
+              </Button>
+              <Button
+                style={{ width: 100 }}
+                onClick={() => handleClickItem("milk")}
+              >
+                Milk
+              </Button>
+              <Button
+                style={{ width: 100 }}
+                onClick={() => handleClickItem("banana")}
+              >
+                Banana
+              </Button>
+              <Button
+                style={{ width: 100 }}
+                onClick={() => handleClickItem("apple")}
+              >
+                Apple
+              </Button>
+              <Button style={{ width: 100 }} danger onClick={resetBill}>
+                Clear list
+              </Button>
+            </Space>
+          </Content>
+        </Layout>
+        <Footer>
+          <Text>
+            Total Price: {totalCost.toFixed(2)}, Total Savings:{" "}
+            {totalSavings.toFixed(2)}
+          </Text>
+        </Footer>
+      </Layout>
     </>
   );
 };
