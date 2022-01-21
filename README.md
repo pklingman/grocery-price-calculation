@@ -8,4 +8,4 @@ Run `npm install` from the root directory of the application
 
 Then run `npm start`
 
-Open browswer and go to http://localhost:3000/
+Open browser and go to http://localhost:3000/
