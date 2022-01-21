@@ -11,3 +11,10 @@ export interface ValueByItemType {
   banana: number;
   apple: number;
 }
+
+export interface PriceDisplayPropsType {
+  costByType: ValueByItemType;
+  countByType: ValueByItemType;
+  totalCost: number;
+  totalSavings: number;
+}

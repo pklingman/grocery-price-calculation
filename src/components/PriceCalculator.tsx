@@ -1,18 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Space,
-  Button,
-  List,
-  Typography,
-  Layout,
-  Statistic,
-  Row,
-  Col,
-  Divider,
-} from "antd";
+import { Space, Button, List, Typography, Layout } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import uniqid from "uniqid";
 
+import { PriceDisplay } from "./PriceDisplay";
 import { PRICES } from "../constants/PRICES";
 import { GroceriesType, ShoppingListType, ValueByItemType } from "../tsTypes";
 import {
@@ -39,7 +30,7 @@ export const PriceCalculator: React.FC = () => {
 
   const { Text, Title } = Typography;
   const { Item } = List;
-  const { Header, Footer, Sider, Content } = Layout;
+  const { Header, Footer, Content } = Layout;
 
   const {
     bread: breadPricingInfo,
@@ -233,77 +224,12 @@ export const PriceCalculator: React.FC = () => {
               flex: "3 1 30%",
             }}
           >
-            <Row>
-              <Col span={8}>
-                <Text strong>Item</Text>
-              </Col>
-              <Col span={8}>
-                <Text strong>Quantity</Text>
-              </Col>
-              <Col span={8}>
-                <Text strong>Price</Text>
-              </Col>
-            </Row>
-            <Divider />
-            <Row>
-              <Col span={8}>
-                <Text>Milk</Text>
-              </Col>
-              <Col span={8}>
-                <Text>{milkCount}</Text>
-              </Col>
-              <Col span={8}>
-                <Text>${costByType.milk.toFixed(2)}</Text>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={8}>
-                <Text>Bread</Text>
-              </Col>
-              <Col span={8}>
-                <Text>{breadCount}</Text>
-              </Col>
-              <Col span={8}>
-                <Text>${costByType.bread.toFixed(2)}</Text>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={8}>
-                <Text>Apple</Text>
-              </Col>
-              <Col span={8}>
-                <Text>{appleCount}</Text>
-              </Col>
-              <Col span={8}>
-                <Text>${costByType.apple.toFixed(2)}</Text>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={8}>
-                <Text>Banana</Text>
-              </Col>
-              <Col span={8}>
-                <Text>{bananaCount}</Text>
-              </Col>
-              <Col span={8}>
-                <Text>${costByType.banana.toFixed(2)}</Text>
-              </Col>
-            </Row>
-            <Divider />
-            <Row gutter={10}>
-              <Col span={12}>
-                <Statistic
-                  title="Total Cost"
-                  value={`$${totalCost.toFixed(2)}`}
-                />
-              </Col>
-              <Col span={12}>
-                <Statistic
-                  title="Total Savings"
-                  value={`$${totalSavings.toFixed(2)}`}
-                />
-              </Col>
-            </Row>
+            <PriceDisplay
+              countByType={countByType}
+              costByType={costByType}
+              totalCost={totalCost}
+              totalSavings={totalSavings}
+            />
           </Content>
         </Layout>
 
