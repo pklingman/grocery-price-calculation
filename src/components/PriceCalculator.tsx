@@ -1,5 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Space, Button, List, Typography, Layout } from "antd";
+import {
+  Space,
+  Button,
+  List,
+  Typography,
+  Layout,
+  Statistic,
+  Row,
+  Col,
+} from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import uniqid from "uniqid";
 
@@ -37,24 +46,27 @@ export const PriceCalculator: React.FC = () => {
     banana: bananaPricingInfo,
     apple: applePricingInfo,
   } = PRICES;
+
   const {
     unitPrice: breadUnitPrice,
     salePrice: breadSalePrice,
     saleQuantity: breadSaleQuantity,
   } = breadPricingInfo;
+
   const {
     unitPrice: milkUnitPrice,
     salePrice: milkSalePrice,
     saleQuantity: milkSaleQuantity,
   } = milkPricingInfo;
 
+  const {
+    bread: breadCount,
+    milk: milkCount,
+    banana: bananaCount,
+    apple: appleCount,
+  } = countByType;
+
   const calculateTotalBill = useCallback(() => {
-    const {
-      bread: breadCount,
-      milk: milkCount,
-      banana: bananaCount,
-      apple: appleCount,
-    } = countByType;
     const breadTotalCostAfterDiscounts = calculateItemDiscounts(
       breadCount,
       breadUnitPrice,
@@ -96,7 +108,10 @@ export const PriceCalculator: React.FC = () => {
     breadSalePrice,
     breadSaleQuantity,
     breadUnitPrice,
-    countByType,
+    appleCount,
+    bananaCount,
+    breadCount,
+    milkCount,
     milkSalePrice,
     milkSaleQuantity,
     milkUnitPrice,
@@ -142,23 +157,30 @@ export const PriceCalculator: React.FC = () => {
             Calculate your grocery bill
           </Title>
         </Header>
-        <Layout>
+        <Layout style={{ display: "flex", flexDirection: "row" }}>
           <Content style={{ display: "flex", flexDirection: "column" }}>
             <List
               locale={{
                 emptyText: "Add groceries to your list from the choices below.",
               }}
-              style={{ width: "40%", height: 600, overflow: "scroll" }}
+              style={{
+                width: "60%",
+                height: 600,
+                overflow: "scroll",
+                margin: 10,
+                background: "#E5EAEA",
+              }}
               dataSource={shoppingList}
               size="small"
               renderItem={({ groceryType, id }) => (
                 <Item
                   key={`list-${id}`}
+                  style={{ background: "#D7EDEF" }}
                   extra={
                     <Button
                       type="ghost"
                       icon={<CloseOutlined />}
-                      style={{ border: 0, color: "lightgray" }}
+                      style={{ border: 0, color: "gray" }}
                       onClick={() => {
                         handleRemoveItem(id, groceryType);
                       }}
@@ -176,35 +198,37 @@ export const PriceCalculator: React.FC = () => {
               style={{ display: "flex", flexDirection: "row", margin: 20 }}
             >
               <Button
-                style={{ width: 100 }}
+                style={{ width: 80 }}
                 onClick={() => handleClickItem("bread")}
               >
                 Bread
               </Button>
               <Button
-                style={{ width: 100 }}
+                style={{ width: 80 }}
                 onClick={() => handleClickItem("milk")}
               >
                 Milk
               </Button>
               <Button
-                style={{ width: 100 }}
+                style={{ width: 80 }}
                 onClick={() => handleClickItem("banana")}
               >
                 Banana
               </Button>
               <Button
-                style={{ width: 100 }}
+                style={{ width: 80 }}
                 onClick={() => handleClickItem("apple")}
               >
                 Apple
               </Button>
-              <Button style={{ width: 100 }} danger onClick={resetBill}>
+              <Button style={{ width: 80 }} danger onClick={resetBill}>
                 Clear list
               </Button>
             </Space>
           </Content>
+          <Content>Hi!</Content>
         </Layout>
+
         <Footer>
           <Text>
             Total Price: {totalCost.toFixed(2)}, Total Savings:{" "}
