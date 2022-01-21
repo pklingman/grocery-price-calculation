@@ -1,0 +1,62 @@
+.header {
+  background: #189aa6;
+}
+
+.top-layout {
+  width: 750px;
+  height: 650px;
+}
+
+.content-layout,
+.list-button-content,
+.space {
+  display: flex;
+}
+
+.content-layout,
+.space {
+  flex-direction: row;
+}
+
+.list-button-content {
+  flex-direction: column;
+}
+
+.display-content {
+  margin: 50px 30px 10px 10px;
+  flex: 3 1 30%;
+}
+
+.list {
+  width: 90%;
+  height: 600px;
+  overflow: scroll;
+  margin: 10px;
+  background: #e5eaea;
+}
+
+.list-item {
+  background: #d7edef;
+}
+
+.space {
+  margin: 20px;
+}
+
+.item-button {
+  width: 80px;
+}
+
+.danger-button {
+  width: 100px;
+}
+
+.icon-button {
+  border: 0px;
+  color: gray;
+}
+
+#header-title {
+  color: #fff;
+  margin-top: 10px;
+}
