@@ -219,8 +219,7 @@ export const PriceCalculator: React.FC = () => {
             />
           </Content>
         </Layout>
-
-        <Footer></Footer>
+        <Footer />
       </Layout>
     </>
   );
