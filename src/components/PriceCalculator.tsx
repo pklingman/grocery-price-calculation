@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Space, Button, List, Typography, Layout } from "antd";
 import { CloseOutlined } from "@ant-design/icons";
 import uniqid from "uniqid";
-
+import "../App.css";
 import { PriceDisplay } from "./PriceDisplay";
 import { PRICES } from "../constants/PRICES";
 import { GroceriesType, ShoppingListType, ValueByItemType } from "../tsTypes";
@@ -143,36 +143,30 @@ export const PriceCalculator: React.FC = () => {
 
   return (
     <>
-      <Layout style={{ width: 750, height: 650 }}>
-        <Header style={{ background: "#189AA6" }}>
-          <Title style={{ color: "white", marginTop: 10 }} level={3}>
+      <Layout className="top-layout">
+        <Header className="header">
+          <Title id="header-title" level={3}>
             Calculate your grocery bill
           </Title>
         </Header>
-        <Layout style={{ display: "flex", flexDirection: "row" }}>
-          <Content style={{ display: "flex", flexDirection: "column" }}>
+        <Layout className="content-layout">
+          <Content className="list-button-content">
             <List
+              className="list"
               locale={{
                 emptyText: "Add groceries to your list from the choices below.",
-              }}
-              style={{
-                width: "90%",
-                height: 600,
-                overflow: "scroll",
-                margin: 10,
-                background: "#E5EAEA",
               }}
               dataSource={shoppingList}
               size="small"
               renderItem={({ groceryType, id }) => (
                 <Item
+                  className="list-item"
                   key={`list-${id}`}
-                  style={{ background: "#D7EDEF" }}
                   extra={
                     <Button
+                      className="icon-button"
                       type="ghost"
                       icon={<CloseOutlined />}
-                      style={{ border: 0, color: "gray" }}
                       onClick={() => {
                         handleRemoveItem(id, groceryType);
                       }}
@@ -186,44 +180,37 @@ export const PriceCalculator: React.FC = () => {
               )}
             />
 
-            <Space
-              style={{ display: "flex", flexDirection: "row", margin: 20 }}
-            >
+            <Space className="space">
               <Button
-                style={{ width: 80 }}
+                className="item-button"
                 onClick={() => handleClickItem("bread")}
               >
                 Bread
               </Button>
               <Button
-                style={{ width: 80 }}
+                className="item-button"
                 onClick={() => handleClickItem("milk")}
               >
                 Milk
               </Button>
               <Button
-                style={{ width: 80 }}
+                className="item-button"
                 onClick={() => handleClickItem("banana")}
               >
                 Banana
               </Button>
               <Button
-                style={{ width: 80 }}
+                className="item-button"
                 onClick={() => handleClickItem("apple")}
               >
                 Apple
               </Button>
-              <Button style={{ width: 100 }} danger onClick={resetBill}>
+              <Button className="danger-button" danger onClick={resetBill}>
                 Clear list
               </Button>
             </Space>
           </Content>
-          <Content
-            style={{
-              margin: "50px 30px 10px 10px",
-              flex: "3 1 30%",
-            }}
-          >
+          <Content className="display-content">
             <PriceDisplay
               countByType={countByType}
               costByType={costByType}

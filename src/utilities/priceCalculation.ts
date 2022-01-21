@@ -4,15 +4,15 @@ export const calculateItemDiscounts = (
   salePrice: number,
   saleQuantity: number
 ) => {
-  if (totalItems < saleQuantity) return unitPrice * totalItems;
-  else {
-    const totalUnitPricedItems = totalItems % saleQuantity;
-    const totalSalePricedItems = totalItems - totalUnitPricedItems;
-    const unitPricedItemCost = totalUnitPricedItems * unitPrice;
-    const salePricedItemsCost =
-      totalSalePricedItems * (salePrice / saleQuantity);
-    return unitPricedItemCost + salePricedItemsCost;
+  if (totalItems < saleQuantity) {
+    return unitPrice * totalItems;
   }
+
+  const totalUnitPricedItems = totalItems % saleQuantity;
+  const totalSalePricedItems = totalItems - totalUnitPricedItems;
+  const unitPricedItemCost = totalUnitPricedItems * unitPrice;
+  const salePricedItemsCost = totalSalePricedItems * (salePrice / saleQuantity);
+  return unitPricedItemCost + salePricedItemsCost;
 };
 
 export const calculateItemSavings = (
